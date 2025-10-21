@@ -1,0 +1,13 @@
+# Build stage
+FROM eclipse-temurin:latest AS build
+
+WORKDIR /app
+COPY Sieve.java .
+RUN javac Sieve.java 
+RUN test -f Sieve.class
+
+FROM eclipse-temurin:latest
+
+WORKDIR /app 
+COPY --from=build /app/Sieve.class .
+ENTRYPOINT ["java", "Sieve"]

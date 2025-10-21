@@ -1,7 +1,0 @@
-FROM gcc:15.1.0
-LABEL MAINTAINER=ehemdal@brandeis.edu
-RUN mkdir /myapp
-COPY ./code/hello.c /myapp
-WORKDIR /myapp
-RUN gcc -static -o myapp hello.c
-CMD ["./myapp"]
