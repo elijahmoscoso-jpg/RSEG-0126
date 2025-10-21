@@ -1,0 +1,23 @@
+FROM openjdk:11-jre-slim
+
+# Install Ant
+RUN apt-get update && apt-get install -y ant && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Copy source files and build files
+COPY Sieve.java /app/
+COPY build.xml /app/
+
+# Build the application with Ant
+RUN ant jar
+
+# Copy the JAR to a more permanent location
+RUN mkdir /app/dist && \
+    cp build/jar/*.jar /app/dist/
+
+# Create entrypoint script
+RUN echo '#!/bin/bash\njava -jar /app/dist/Sieve.jar "$@"' > /entrypoint.sh && \
+    chmod +x /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]

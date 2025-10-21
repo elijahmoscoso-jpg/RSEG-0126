@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Sieve" default="jar" basedir=".">
+    
+    <!--NOTE: ant -p can be used in dir with build.xml to list all available build targets -->
+
+    <!--create variables for later steps -->
+    <property name="src.dir" value="."/>
+    <property name="build.dir" value="build"/>
+    <property name="classes.dir" value="${build.dir}/classes"/>
+    <property name="jar.dir" value="${build.dir}/jar"/>
+    <property name="main-class" value="Sieve"/>
+    
+    <!--remove everything in the build directory (ant clean) -->
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+    </target>
+    
+    <!--compile Sieve.java and place in classes dir (ant compile) -->
+    <target name="compile" depends="clean">
+        <mkdir dir="${classes.dir}"/>
+        <javac srcdir="${src.dir}" destdir="${classes.dir}" includeantruntime="false"/>
+    </target>
+    
+    <!--create Sieve.jar executable  (ant jar OR ant) -->
+    <target name="jar" depends="compile">
+        <mkdir dir="${jar.dir}"/>
+        <jar destfile="${jar.dir}/${ant.project.name}.jar" basedir="${classes.dir}">
+            <manifest>
+                <attribute name="Main-Class" value="${main-class}"/>
+            </manifest>
+        </jar>
+    </target>
+    
+    <!--starts Sieve.jar program with a value of 100 input (depending on jar means it will perform jar beforehand) -->
+    <target name="test" depends="jar">
+        <java classname="${main-class}" fork="true" output="test_output.txt">
+            <classpath>
+                <pathelement location="${jar.dir}/${ant.project.name}.jar"/>
+            </classpath>
+            <arg value="100"/>
+        </java>
+    </target>
+</project>
