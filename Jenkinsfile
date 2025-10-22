@@ -1,6 +1,10 @@
 pipeline {
     agent any //run on any node in env
     
+    options {
+        timeout(time: 20, unit: 'MINUTES') // Prevent infinite hangs
+    }
+
     //sets up env variables for later use in Package pipeline stage
     environment {
         DOCKER_IMAGE = 'sieve-app'
@@ -62,7 +66,7 @@ pipeline {
                 echo 'Building Docker Container...'
                 bat '''
                     REM Build Docker image
-                    docker build -t %DOCKER_IMAGE%:%DOCKER_TAG% .
+                    docker build -f Dockerfile.ppln -t %DOCKER_IMAGE%:%DOCKER_TAG% .
                     
                     REM Test the container
                     echo "Testing container..."
@@ -79,7 +83,7 @@ pipeline {
     post {
         always {
             // delete up test output
-            bat 'if exist test_output.txt del /F test_output.txt'
+            bat 'if exist test_output.txt del /F test_output.txt || echo No test_output.txt to delete'
             
             // save Docker image 
             bat '''
