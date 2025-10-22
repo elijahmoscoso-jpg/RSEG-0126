@@ -31,14 +31,14 @@ pipeline {
                 echo 'Testing Application with input 100...'
                 script {
                     // Run test and capture output
-                    def testOutput = bat(
-                        script: '''
-                            ant test
-                            type test_output.txt
-                        ''',
-                        returnStdout: true
-                    ).trim() // .trim() removes trailing whitespace from returnStdout
+                    bat '''
+                        ant test
+                    '''
+                    // .trim() removes trailing whitespace
                     
+                    // read test output
+                    def testOutput = readFile('test_output.txt').trim()
+
                     // Read expected output 
                     def case100success = readFile('case100success.txt').trim()
                     
