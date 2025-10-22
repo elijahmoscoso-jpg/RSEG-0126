@@ -2,7 +2,7 @@ pipeline {
     agent any //run on any node in env
     
     options {
-        timeout(time: 20, unit: 'MINUTES') // Prevent infinite hangs
+        timeout(time: 10, unit: 'MINUTES') // Prevent infinite hangs
     }
 
     //sets up env variables for later use in Package pipeline stage
