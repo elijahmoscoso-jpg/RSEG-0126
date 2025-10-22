@@ -4,7 +4,7 @@ pipeline {
     //sets up env variables for later use in Package pipeline stage
     environment {
         DOCKER_IMAGE = 'sieve-app'
-        DOCKER_TAG = 'latest'
+        DOCKER_TAG = 'ppln'
     }
     
     stages {
@@ -39,8 +39,8 @@ pipeline {
                     def case100success = readFile('case100success.txt').trim()
                     
                     // Compare outputs (basic comparison - remove spaces and compare)
-                    def receivedOutput = testOutput.replaceAll("[^0-9,]", "").trim()
-                    def expectedOutput = case100success.replaceAll("[^0-9,]", "").trim()
+                    def receivedOutput = testOutput.replaceAll(/[^0-9,]/, "").trim()
+                    def expectedOutput = case100success.replaceAll(/[^0-9,]/, "").trim()
                     
                     //display answer and result for visibility
                     echo "Received output: ${receivedOutput}"
@@ -49,7 +49,6 @@ pipeline {
                     //report test results
                     if (receivedOutput == expectedOutput) {
                         echo "✅ Test PASSED!"
-                        currentBuild.result = 'SUCCESS'
                     } else {
                         error("❌ Test FAILED! Outputs don't match.")
                     }
@@ -80,7 +79,7 @@ pipeline {
     post {
         always {
             // delete up test output
-            bat 'del /F test_output.txt || echo "No test_output.txt to delete"'
+            bat 'if exist test_output.txt del /F test_output.txt'
             
             // save Docker image 
             bat '''
