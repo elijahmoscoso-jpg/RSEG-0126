@@ -1,4 +1,4 @@
-FROM openjdk:11-jre-slim
+FROM openjdk:21-jre-slim
 
 # Install Ant
 RUN apt-get update && apt-get install -y ant && rm -rf /var/lib/apt/lists/*

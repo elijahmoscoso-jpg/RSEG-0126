@@ -9,9 +9,17 @@ import java.util.Scanner;
 
 public class Sieve  {
    public static void main(String args[]) {
-      Scanner sc = new Scanner(System.in);
-      System.out.println("Enter a number");
-      int num = sc.nextInt();
+      int num;
+
+      if (args.length > 0){ //handle ant test command line argument
+         num = Integer.parseInt(args[0]);
+      } else { //handle manual user input if no command line args
+         Scanner sc = new Scanner(System.in);
+         System.out.println("Enter a number");
+         num = sc.nextInt();
+         sc.close();
+      }
+
       boolean[] bool = new boolean[num];
      
       for (int i = 0; i< bool.length; i++) {
@@ -36,6 +44,6 @@ public class Sieve  {
             }
          }
       }
-      sc.close();
+      
    }
 }

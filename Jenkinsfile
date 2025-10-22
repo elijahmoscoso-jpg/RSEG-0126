@@ -7,7 +7,7 @@ pipeline {
 
     //sets up env variables for later use in Package pipeline stage
     environment {
-        DOCKER_IMAGE = 'sieve-app'
+        DOCKER_IMAGE = 'sieve'
         DOCKER_TAG = 'ppln'
     }
     
